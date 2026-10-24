@@ -1,26 +1,52 @@
 {
-  "name": "app-tmp",
-  "version": "0.1.0",
+  "name": "bookleaf-connect",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:seed": "tsx prisma/seed.ts",
+    "postinstall": "prisma generate"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@google/genai": "2.30.0",
+    "@prisma/client": "6.19.3",
+    "bcryptjs": "3.0.3",
+    "jose": "6.2.13",
     "next": "16.4.2",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "server-only": "0.0.1",
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
-    "@types/node": "^20",
+    "@types/node": "24.19.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.2",
+    "prisma": "6.19.3",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "tsx": "4.23.15",
+    "typescript": "^5",
+    "vitest": "5.0.5"
+  },
+  "allowScripts": {
+    "@prisma/engines@6.19.3": true,
+    "@prisma/client@6.19.3": true,
+    "prisma@6.19.3": true,
+    "esbuild@0.28.2": true
   }
 }

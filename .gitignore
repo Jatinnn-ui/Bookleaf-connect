@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+!.env.example
+# confidential assignment brief
+BookLeaf_Technical_Assignment_1.pdf
+BookLeaf_Technical_Assignment_1.txt
