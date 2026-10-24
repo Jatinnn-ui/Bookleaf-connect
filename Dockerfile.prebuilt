@@ -1,0 +1,37 @@
+# syntax=docker/dockerfile:1
+# Lightweight image that consumes a Next.js standalone build produced on the HOST
+# (`npm run build`). Use this when the Docker VM lacks the memory to run
+# `next build` itself. The canonical, fully self-contained build is `Dockerfile`.
+#
+#   npm run build
+#   docker build -f Dockerfile.prebuilt -t blc-app .
+#
+# Requires .next/standalone and .next/static to exist (they are produced by the build).
+
+FROM node:24-alpine AS runner
+RUN apk add --no-cache openssl libc6-compat
+WORKDIR /app
+ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PORT=3000 HOSTNAME=0.0.0.0
+RUN addgroup -S app && adduser -S app -G app
+
+COPY --chown=app:app .next/standalone ./
+COPY --chown=app:app .next/static ./.next/static
+COPY --chown=app:app public ./public
+# Prisma CLI/engine + schema + sample data for migrate/seed. The standalone
+# bundle already contains the generated Prisma client used at runtime.
+COPY --chown=app:app node_modules/prisma ./node_modules/prisma
+COPY --chown=app:app node_modules/@prisma ./node_modules/@prisma
+COPY --chown=app:app node_modules/.bin ./node_modules/.bin
+COPY --chown=app:app node_modules/tsx ./node_modules/tsx
+COPY --chown=app:app node_modules/bcryptjs ./node_modules/bcryptjs
+COPY --chown=app:app node_modules/zod ./node_modules/zod
+COPY --chown=app:app prisma ./prisma
+COPY --chown=app:app bookleaf_sample_data.json package.json ./
+COPY --chown=app:app docker/entrypoint.sh ./entrypoint.sh
+RUN chmod +x ./entrypoint.sh
+
+USER app
+EXPOSE 3000
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+  CMD wget -qO- http://127.0.0.1:3000/api/health || exit 1
+ENTRYPOINT ["./entrypoint.sh"]
