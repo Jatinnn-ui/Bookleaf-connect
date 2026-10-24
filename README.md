@@ -6,6 +6,20 @@
 - API reference: [docs/api.md](docs/api.md)
 - One-page write-up: [docs/approach-writeup.md](docs/approach-writeup.md)
 
+## Live demo
+**URL:** https://idaho-distinct-kings-golf.trycloudflare.com
+
+The database is hosted on Neon (managed Postgres), pre-seeded with the sample dataset. Sign in with:
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | `admin@bookleaf.local` | `Admin@123` |
+| Author | `priya.sharma@email.com` | `Author@123` |
+
+All ten sample authors share the password `Author@123` (e.g. `sneha.kulkarni@email.com` has a book still in production, useful for testing empty/pending states).
+
+> Note: the demo is served from a local instance exposed via a Cloudflare quick tunnel, so the `*.trycloudflare.com` URL is only reachable while the tunnel is running. For a permanent deployment, use the Docker/Compose setup below with any container host.
+
 ## Stack
 Next.js 16 (App Router, Route Handlers as the REST API) · React 19 · TypeScript · Tailwind CSS 4 · PostgreSQL 16 · Prisma 6 · Zod 4 · `jose` JWT cookie sessions + bcrypt · Google Gemini via `@google/genai` · Vitest · Docker.
 

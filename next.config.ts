@@ -4,6 +4,9 @@ const nextConfig: NextConfig = {
   // Standalone output produces a minimal server bundle for the Docker image.
   output: "standalone",
   poweredByHeader: false,
+  // Allow the Cloudflare quick-tunnel host to reach dev resources (HMR, etc.)
+  // when demoing `next dev` through a public tunnel. Harmless in production.
+  allowedDevOrigins: ["*.trycloudflare.com"],
   turbopack: {
     rules: {
       "*.css": {
