@@ -7,7 +7,7 @@
 - One-page write-up: [docs/approach-writeup.md](docs/approach-writeup.md)
 
 ## Live demo
-**URL:** https://idaho-distinct-kings-golf.trycloudflare.com
+**URL:** https://retailer-plaintiff-way-performer.trycloudflare.com
 
 The database is hosted on Neon (managed Postgres), pre-seeded with the sample dataset. Sign in with:
 
