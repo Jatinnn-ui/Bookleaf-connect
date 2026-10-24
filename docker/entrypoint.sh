@@ -1,14 +1,9 @@
 #!/bin/sh
 set -e
-# Apply pending migrations (idempotent, safe to run on every boot).
-# The Prisma CLI + schema live in an isolated ./migrate dir so the slim runtime
-# image doesn't need the full dev dependency tree.
-#
-# Seeding is NOT run here. The dataset is seeded once against the database
-# (e.g. `npx tsx prisma/seed.ts` from a dev machine pointed at the same DB).
-if [ "${RUN_MIGRATIONS:-true}" = "true" ]; then
-  if [ -f ./migrate/prisma/schema.prisma ]; then
-    ./migrate/node_modules/.bin/prisma migrate deploy --schema ./migrate/prisma/schema.prisma
-  fi
-fi
+# The runtime image is intentionally slim (standalone bundle only), so schema
+# migrations and seeding are performed out-of-band against the database rather
+# than on container start:
+#   - Migrations: `npx prisma migrate deploy` from a machine/CI with the repo
+#   - Seed (once): `npx tsx prisma/seed.ts`
+# Both point at the same DATABASE_URL and are idempotent.
 exec node server.js

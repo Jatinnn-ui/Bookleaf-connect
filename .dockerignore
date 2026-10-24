@@ -6,5 +6,7 @@ node_modules
 !.env.example
 tests
 coverage
+docs
 *.pdf
+*.txt
 *.log
